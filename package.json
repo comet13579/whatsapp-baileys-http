@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "@whiskeysockets/baileys": "^7.0.0-rc13",
+    "multer": "^2.2.0",
+    "qrcode-terminal": "^0.12.0"
+  }
+}
