@@ -120,8 +120,10 @@ class BaileysServer:
     ) -> list:
         """Unified send — text message and/or one or more files, in one call.
 
-        Note: bot.js adds a random 1-2s jitter + rate limiting (5/sec)
-        per item, so a call with N items takes ~N x 1-3s to return.
+        Note: bot.js ENQUEUES every item (anti-ban pacing). This call returns
+        immediately with HTTP 202 per item; the bot sends them one by one with
+        a random 1-3 minute gap between sends. Check GET /queue on bot.js to
+        watch progress.
 
         Args:
             phone: Phone number in any format (+852 5275 8251, 85252758251, ...).
@@ -141,8 +143,9 @@ class BaileysServer:
             ptt: If True, send audio as a voice note.
 
         Returns:
-            List of response dicts from bot.js — one per item sent, in order
-            (text first, then files).
+            List of response dicts from bot.js — one per item ENQUEUED, in
+            order (text first, then files). Each contains the queue id and
+            position (202 responses), not delivery confirmation.
 
         Raises:
             ValueError: if neither message nor files is provided.
